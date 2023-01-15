@@ -12,7 +12,7 @@ import { PrismaClient } from "@prisma/client";
 
 import typeDefs from "./graphql/typeDefs";
 import resolvers from "./graphql/resolvers";
-import { graphQLContext } from "./util/types";
+import { Session, graphQLContext } from "./util/types";
 
 async function main() {
   dotenv.config();
@@ -34,7 +34,7 @@ async function main() {
   const server = new ApolloServer({
     schema,
     context: async ({ req, res }): Promise<graphQLContext> => {
-      const session = await getSession({ req });
+      const session = (await getSession({ req })) as Session;
 
       return {
         session,
